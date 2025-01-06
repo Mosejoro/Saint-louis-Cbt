@@ -1,0 +1,194 @@
+:root {
+  --primary-color: #0078d7;
+  --primary-dark: #005bb5;
+  --secondary-color: #f4f4f9;
+  --border-color: #ddd;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--secondary-color);
+  min-height: 100vh;
+}
+
+header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.upload-section,
+.documents-section {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  flex: 1;
+}
+
+.section-title {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+select,
+button,
+input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+input[type="file"] {
+  display: none;
+}
+select:focus,
+button:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.1);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: var(--primary-dark);
+}
+
+.subject-radio {
+  background: #f8f9fa;
+  margin: 8px 0;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.subject-radio:hover {
+  background: #fff;
+  border-color: var(--primary-color);
+}
+
+.subject-radio input[type="radio"] {
+  margin-right: 10px;
+}
+
+.output {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.question {
+  background: white;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.uploaded-docs {
+  margin-top: 20px;
+}
+
+.doc-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin: 10px 0;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.doc-info {
+  flex: 1;
+}
+
+.doc-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-delete {
+  background-color: var(--danger-color);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background-color: #c82333;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+}
+.ddd {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+}
+@media screen and (max-width: 767px) {
+  .t {
+    position: absolute;
+    background-color: red;
+    width: auto;
+    padding: 8px 16px;
+  }
+  .t img {
+    width: 1rem;
+    height: 1.3rem;
+  }
+  .form-group {
+    text-align: center;
+  }
+}

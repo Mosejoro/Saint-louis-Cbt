@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam Portal</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <img src="Image/Bida2.png" alt="" />
+      <h1>Welcome to the Exam Portal</h1>
+    </header>
+    <div class="container">
+      <!-- Day Selection -->
+      <div id="day-selection">
+        <label for="day-dropdown">Select Day:</label>
+        <select id="day-dropdown" onchange="updateTimetable()">
+          <option value="">-- Select Day --</option>
+          <option value="Day1">Day 1</option>
+          <option value="Day2">Day 2</option>
+          <option value="Day3">Day 3</option>
+          <option value="Day4">Day 4</option>
+          <option value="Day5">Day 5</option>
+        </select>
+      </div>
+
+      <!-- Class Selection -->
+      <div id="class-selection">
+        <h2>Select Your Class</h2>
+        <select id="class-dropdown">
+          <option value="">-- Select Class --</option>
+          <option value="Pry1">Pry 1</option>
+          <option value="Pry2">Pry 2</option>
+          <option value="Pry3">Pry 3</option>
+          <option value="Pry4">Pry 4</option>
+          <option value="Pry5">Pry 5</option>
+          <option value="Pry6">Pry 6</option>
+        </select>
+        <button onclick="startExam()">Start Exam</button>
+      </div>
+      <div id="subject-selection" style="display: none">
+        <h2>Select Your Subject</h2>
+        <select id="subject-dropdown">
+          <option value="">-- Select Subject --</option>
+        </select>
+        <button onclick="proceedToExam()">Proceed to Exam</button>
+      </div>
+
+      <!-- Exam Portal -->
+      <div id="exam-portal" class="questions">
+        <h2>Exam Questions</h2>
+        <form id="exam-form">
+          <!-- Example Question -->
+          <div class="question" data-class="Pry1" data-day="Day1">
+            <label>1. What is 2 + 2?</label>
+            <input type="radio" name="q1" value="3" /> 3<br />
+            <input type="radio" name="q1" value="4" /> 4<br />
+            <input type="radio" name="q1" value="5" /> 5
+          </div>
+
+          <div class="question" data-class="Pry2" data-day="Day1">
+            <label>1. What is the capital of Nigeria?</label>
+            <input type="radio" name="q2" value="Lagos" /> Lagos<br />
+            <input type="radio" name="q2" value="Abuja" /> Abuja<br />
+            <input type="radio" name="q2" value="Kano" /> Kano
+          </div>
+
+          <!-- Add more questions here for different days and classes -->
+
+          <button type="button" onclick="submitExam()">Submit</button>
+        </form>
+        <div class="score" id="score-section"></div>
+      </div>
+    </div>
+
+    <script>
+      function updateTimetable() {
+        const selectedDay = document.getElementById("day-dropdown").value;
+        const questions = document.querySelectorAll(".question");
+
+        questions.forEach((question) => {
+          if (question.dataset.day === selectedDay) {
+            question.style.display = "block";
+          } else {
+            question.style.display = "none";
+          }
+        });
+
+        document.getElementById("class-selection").style.display = selectedDay
+          ? "block"
+          : "none";
+      }
+
+      function startExam() {
+        const selectedClass = document.getElementById("class-dropdown").value;
+        const selectedDay = document.getElementById("day-dropdown").value;
+
+        if (!selectedDay || !selectedClass) {
+          alert("Please select both day and class.");
+          return;
+        }
+
+        // Redirect to the exam page with the selected class and day as query parameters
+        const url = `exam.html?day=${selectedDay}&class=${selectedClass}`;
+        window.location.href = url;
+      }
+
+      function submitExam() {
+        const form = document.getElementById("exam-form");
+        const answers = new FormData(form);
+
+        // Simple scoring system
+        let score = 0;
+        if (answers.get("q1") === "4") score++;
+        if (answers.get("q2") === "Abuja") score++;
+
+        // Display score
+        document.getElementById("exam-portal").style.display = "none";
+        const scoreSection = document.getElementById("score-section");
+        scoreSection.style.display = "block";
+        scoreSection.textContent = `Your score is: ${score}`;
+      }
+      const timetable = {
+        Day1: {
+          Pry1: ["English", "Mathematics"],
+          Pry2: ["Basic Science", "CCA"],
+          Pry3: ["National Value", "Prevocational Studies"],
+          Pry4: ["English", "Mathematics"],
+          Pry5: ["CRK", "French"],
+          Pry6: ["Basic Science", "National Value"],
+        },
+        Day2: {
+          Pry1: ["CCA", "Basic Science"],
+          Pry2: ["English", "Mathematics"],
+          Pry3: ["CRK", "English"],
+          Pry4: ["CCA", "Prevocational Studies"],
+          Pry5: ["English", "Mathematics"],
+          Pry6: ["CRK", "French"],
+        },
+        Day3: {
+          Pry1: ["National Value", "CRK"],
+          Pry2: ["Prevocational Studies", "National Value"],
+          Pry3: ["Mathematics", "CCA"],
+          Pry4: ["Basic Science", "National Value"],
+          Pry5: ["Prevocational Studies", "CCA"],
+          Pry6: ["English", "Mathematics"],
+        },
+        Day4: {
+          Pry1: ["Prevocational Studies", "English"],
+          Pry2: ["CRK", "Basic Science"],
+          Pry3: ["Basic Science", "National Value"],
+          Pry4: ["CRK", "French"],
+          Pry5: ["Basic Science", "National Value"],
+          Pry6: ["CCA", "Prevocational Studies"],
+        },
+        Day5: {
+          Pry1: ["Mathematics", "Basic Science"],
+          Pry2: ["CCA", "English"],
+          Pry3: ["Prevocational Studies", "CRK"],
+          Pry4: ["National Value", "English"],
+          Pry5: ["CRK", "Prevocational Studies"],
+          Pry6: ["French", "Basic Science"],
+        },
+        Day6: {
+          Pry1: ["CRK", "Prevocational Studies"],
+          Pry2: ["Mathematics", "National Value"],
+          Pry3: ["English", "Mathematics"],
+          Pry4: ["Basic Science", "CCA"],
+          Pry5: ["National Value", "English"],
+          Pry6: ["Mathematics", "CCA"],
+        },
+
+        // Add Day3, Day4, and Day5 data
+      };
+
+      function updateTimetable() {
+        const selectedDay = document.getElementById("day-dropdown").value;
+        const questions = document.querySelectorAll(".question");
+
+        if (!selectedDay) {
+          document.getElementById("class-selection").style.display = "none";
+          document.getElementById("subject-selection").style.display = "none";
+          return;
+        }
+
+        document.getElementById("class-selection").style.display = "block";
+      }
+
+      function startExam() {
+        const selectedClass = document.getElementById("class-dropdown").value;
+        const selectedDay = document.getElementById("day-dropdown").value;
+
+        if (!selectedClass) {
+          alert("Please select your class.");
+          return;
+        }
+
+        // Populate subjects dynamically
+        const subjectDropdown = document.getElementById("subject-dropdown");
+        subjectDropdown.innerHTML = `<option value="">-- Select Subject --</option>`;
+
+        const subjects = timetable[selectedDay][selectedClass];
+        subjects.forEach((subject) => {
+          const option = document.createElement("option");
+          option.value = subject;
+          option.textContent = subject;
+          subjectDropdown.appendChild(option);
+        });
+
+        // Show subject selection
+        document.getElementById("subject-selection").style.display = "block";
+      }
+
+      function proceedToExam() {
+        const selectedClass = document.getElementById("class-dropdown").value;
+        const selectedDay = document.getElementById("day-dropdown").value;
+        const selectedSubject =
+          document.getElementById("subject-dropdown").value;
+
+        if (!selectedSubject) {
+          alert("Please select a subject.");
+          return;
+        }
+
+        // Redirect to exam page
+        const url = `exam.html?day=${selectedDay}&class=${selectedClass}&subject=${selectedSubject}`;
+        window.location.href = url;
+      }
+    </script>
+  </body>
+</html>

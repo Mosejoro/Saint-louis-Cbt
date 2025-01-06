@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam Page</title>
+    <link rel="stylesheet" href="Exam.css" />
+  </head>
+  <body>
+    <header>
+      <img src="img/Bida2.png" alt="" />
+      <h1>Exam Questions</h1>
+    </header>
+    <div id="questions-container">
+      <!-- Questions will be dynamically loaded here -->
+    </div>
+    <button onclick="submitAnswers()" style="max-width: 800px; width: 80%">
+      Submit
+    </button>
+    <script src="exam.js"></script>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init({
+          publicKey: "q6ch413DnL2pjVHuW",
+        });
+      })();
+    </script>
+  </body>
+</html>

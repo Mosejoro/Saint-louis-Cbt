@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Admin Dashboard</h1>
+      <button
+        onclick="logout()"
+        style="
+          position: absolute;
+          right: 20px;
+          top: 20px;
+          background-color: red;
+          width: auto;
+          padding: 4px 10px;
+        "
+        class="t"
+      >
+        <img
+          width="48"
+          height="48"
+          src="https://img.icons8.com/sf-regular/48/close-window.png"
+          alt="close-window"
+        />
+      </button>
+    </header>
+
+    <div class="dashboard-container">
+      <!-- Upload Section -->
+      <div class="upload-section">
+        <h2 class="section-title">Upload Exam Document</h2>
+        <div class="form-group">
+          <label for="day">Select Day:</label>
+          <select id="day" onchange="updateSubjects()">
+            <option value="">-- Select Day --</option>
+            <option value="Day1">Day 1</option>
+            <option value="Day2">Day 2</option>
+            <option value="Day3">Day 3</option>
+            <option value="Day4">Day 4</option>
+            <option value="Day5">Day 5</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="class">Select Class:</label>
+          <select id="class" onchange="updateSubjects()">
+            <option value="">-- Select Class --</option>
+            <option value="Pry1">Pry 1</option>
+            <option value="Pry2">Pry 2</option>
+            <option value="Pry3">Pry 3</option>
+            <option value="Pry4">Pry 4</option>
+            <option value="Pry5">Pry 5</option>
+            <option value="Pry6">Pry 6</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="subject-options">
+          <!-- Subjects will be loaded here -->
+        </div>
+        <!-- Add this inside the upload-section div, after the subject-options div -->
+        <div class="form-group">
+          <br />
+          <label for="doc" class="ddd">
+            <img
+              width="30"
+              height="30"
+              src="https://img.icons8.com/ios-filled/50/FFFFFF/upload-to-cloud--v1.png"
+              alt="upload-to-cloud"
+              style="margin-bottom: -9px"
+            />
+            Upload Document
+          </label>
+          <input type="file" id="doc" accept=".doc,.docx" required />
+        </div>
+
+        <button onclick="processDocument()">Upload and Process</button>
+
+        <div class="output" id="output">
+          <!-- Parsed questions and answers will be displayed here -->
+        </div>
+      </div>
+
+      <!-- Documents Management Section -->
+      <div class="documents-section">
+        <h2 class="section-title">Manage Uploaded Documents</h2>
+        <div class="uploaded-docs" id="uploaded-docs">
+          <!-- Uploaded documents will be listed here -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ... (previous timetable and updateSubjects function remain the same) ...
+
+      function displayUploadedDocs() {
+        const questionsDB =
+          JSON.parse(localStorage.getItem("questionsDB")) || {};
+        const uploadedDocsDiv = document.getElementById("uploaded-docs");
+        uploadedDocsDiv.innerHTML = "";
+
+        for (const day in questionsDB) {
+          for (const className in questionsDB[day]) {
+            for (const subject in questionsDB[day][className]) {
+              const docItem = document.createElement("div");
+              docItem.className = "doc-item";
+              docItem.innerHTML = `
+                <div class="doc-info">
+                  <strong>Day:</strong> ${day} | 
+                  <strong>Class:</strong> ${className} | 
+                  <strong>Subject:</strong> ${subject}
+                  <br>
+                  <small>Questions: ${questionsDB[day][className][subject].length}</small>
+                </div>
+                <div class="doc-actions">
+                  <button class="btn-delete" onclick="deleteDocument('${day}', '${className}', '${subject}')">
+                    Delete
+                  </button>
+                </div>
+              `;
+              uploadedDocsDiv.appendChild(docItem);
+            }
+          }
+        }
+
+        if (uploadedDocsDiv.innerHTML === "") {
+          uploadedDocsDiv.innerHTML = "<p>No documents uploaded yet.</p>";
+        }
+      }
+
+      function deleteDocument(day, className, subject) {
+        if (
+          confirm(
+            `Are you sure you want to delete the ${subject} exam for ${className} on ${day}?`
+          )
+        ) {
+          const questionsDB =
+            JSON.parse(localStorage.getItem("questionsDB")) || {};
+          delete questionsDB[day][className][subject];
+
+          // Clean up empty objects
+          if (Object.keys(questionsDB[day][className]).length === 0) {
+            delete questionsDB[day][className];
+          }
+          if (Object.keys(questionsDB[day]).length === 0) {
+            delete questionsDB[day];
+          }
+
+          localStorage.setItem("questionsDB", JSON.stringify(questionsDB));
+          displayUploadedDocs();
+          alert("Document deleted successfully!");
+        }
+      }
+
+      // Modified processDocument function
+      async function processDocument() {
+        // ... (previous processDocument code remains the same) ...
+
+        // Add this at the end of the reader.onload function:
+        reader.onload = async function (event) {
+          // ... (previous code) ...
+
+          localStorage.setItem("questionsDB", JSON.stringify(questionsDB));
+          displayUploadedDocs(); // Update the documents list
+          alert("Questions successfully added to the exam database!");
+        };
+      }
+
+      // Initial load of documents
+      window.onload = function () {
+        displayUploadedDocs();
+      };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <script src="admin.js"></script>
+    <script>
+      mammoth.styleMap({
+        "p[style-name='Question']": "question",
+        "p[style-name='Option']": "option",
+        "p[style-name='Answer']": "answer",
+      });
+    </script>
+    <script>
+      // Check if user is logged in
+      if (sessionStorage.getItem("adminLoggedIn") !== "true") {
+        window.location.href = "login.html";
+      }
+
+      // Add logout function
+      function logout() {
+        sessionStorage.removeItem("adminLoggedIn");
+        window.location.href = "login.html";
+      }
+    </script>
+  </body>
+</html>
