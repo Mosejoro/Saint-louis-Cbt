@@ -171,13 +171,25 @@ async function submitAnswers() {
       )
       .join("\n"),
   };
-
+  const sheetsData = {
+    ...emailContent,
+    day: day,
+    class: studentClass,
+    subject: subject,
+  };
   try {
-    const response = await emailjs.send(
-      "service_1rn3uuf",
-      "template_pxrrfru",
-      emailContent
+    await emailjs.send("service_1rn3uuf", "template_pxrrfru", emailContent);
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbxgf61IfK3c5VzEUvbNE4pCe8GYsmvkIdDTDYN8pjtE7ThXYCRZmGByD53t8oFv0VQI9A/exec",
+      {
+        method: "POST",
+        body: JSON.stringify(sheetsData),
+      }
     );
+
+    if (!response.ok) {
+      throw new Error("Failed to save to spreadsheet");
+    }
 
     // Modified submission display
     const container = document.getElementById("questions-container");
