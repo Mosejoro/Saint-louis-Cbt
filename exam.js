@@ -125,7 +125,7 @@ async function submitAnswers() {
   const questionsDB = JSON.parse(localStorage.getItem("questionsDB")) || {};
   const examQuestions = questionsDB[day]?.[studentClass]?.[subject] || [];
 
-  // Calculate results for email
+  // Calculate results
   let score = 0;
   const detailedResults = [];
 
@@ -153,7 +153,7 @@ async function submitAnswers() {
   else if (percentage >= 50) grade = "D";
   else grade = "F";
 
-  const emailContent = {
+  const sheetsData = {
     student_name: studentName,
     subject: subject,
     class_info: `Class: ${studentClass}`,
@@ -170,15 +170,11 @@ async function submitAnswers() {
           }, Correct: ${r.correctAnswer})`
       )
       .join("\n"),
-  };
-  const sheetsData = {
-    ...emailContent,
     day: day,
     class: studentClass,
-    subject: subject,
   };
+
   try {
-    await emailjs.send("service_1rn3uuf", "template_pxrrfru", emailContent);
     const response = await fetch(
       "https://script.google.com/macros/s/AKfycbxgf61IfK3c5VzEUvbNE4pCe8GYsmvkIdDTDYN8pjtE7ThXYCRZmGByD53t8oFv0VQI9A/exec",
       {
@@ -197,6 +193,7 @@ async function submitAnswers() {
       <div class="submission-summary">
         <h2>Exam Submitted Successfully!</h2>
         <p class="thank-you-message">Thank you for completing the exam, ${studentName}.</p>
+        <p class="thank-you-message">Wishing You The Very Best In The Remaining Exams.</p>
         <p class="email-confirmation">A detailed report has been sent to your teacher.</p>
         <a href="index.html" class="go-home">Return to Home Page</a>
       </div>
@@ -208,8 +205,10 @@ async function submitAnswers() {
     const submitButton = document.querySelector("button");
     if (submitButton) submitButton.style.display = "none";
   } catch (error) {
-    console.error("Email sending error:", error);
-    alert("Failed to send results. Please try again or contact your teacher.");
+    console.error("Submission error:", error);
+    alert(
+      "Failed to submit results. Please try again or contact your teacher."
+    );
   }
 }
 
