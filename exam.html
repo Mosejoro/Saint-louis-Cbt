@@ -8,9 +8,12 @@
   </head>
   <body>
     <header>
-      <img src="img/Bida2.png" alt="" />
+      <img src="Image/Bida2.png" alt="" />
       <h1>Exam Questions</h1>
     </header>
+    <div id="offline-banner">
+      You are Currently Offline, Do not Submit untill Connection is Restored
+    </div>
     <div id="questions-container">
       <!-- Questions will be dynamically loaded here -->
     </div>
@@ -29,6 +32,20 @@
           publicKey: "q6ch413DnL2pjVHuW",
         });
       })();
+    </script>
+    <script>
+      // If user is offline
+      const offlineBanner = document.getElementById("offline-banner");
+      function updateOnlineStatus() {
+        if (navigator.onLine) {
+          offlineBanner.style.display = "none";
+        } else {
+          offlineBanner.style.display = "block";
+        }
+      }
+      updateOnlineStatus();
+      window.addEventListener("online", updateOnlineStatus);
+      window.addEventListener("offline", updateOnlineStatus);
     </script>
   </body>
 </html>

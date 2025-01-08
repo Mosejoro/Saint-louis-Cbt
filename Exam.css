@@ -12,7 +12,7 @@ header {
   color: white;
   padding: 1rem;
   text-align: center;
-  width: 100%;
+  width: 96%;
 }
 .container {
   margin-top: 20px;
@@ -67,8 +67,19 @@ input[type="radio"] {
 }
 header img {
   width: 4rem;
+  animation: Up infinite 3s;
 }
-
+@keyframes Up {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 .options-container {
   display: grid;
   gap: 12px;
@@ -428,4 +439,30 @@ header img {
 .cancel-btn {
   background-color: #6c757d;
   color: white;
+}
+#offline-banner {
+  display: none;
+  position: fixed;
+  top: 7rem;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  font-size: 30px;
+  background-color: #f8312f;
+  color: white;
+  text-align: center;
+  z-index: 1000;
+  animation: Warn 3s infinite;
+}
+@keyframes Warn {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(0.8);
+  }
 }
